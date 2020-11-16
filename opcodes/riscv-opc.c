@@ -840,6 +840,8 @@ const struct riscv_opcode riscv_opcodes[] =
 {"cv.clipu",  0, INSN_CLASS_COREV_MAC, "d,s,bi",   MATCH_CLIPU,  MASK_SLET,   match_opcode,   0},
 {"cv.clipr",  0, INSN_CLASS_COREV_MAC, "d,s,t",    MATCH_CLIPU,  MASK_SLET,   match_opcode,   0},
 {"cv.clipur", 0, INSN_CLASS_COREV_MAC, "d,s,t",    MATCH_CLIPUR, MASK_SLET,   match_opcode,   0},
+{"cv.addn",   0, INSN_CLASS_COREV_MAC, "d,s,t,b3", MATCH_ADDN,   MASK_ADDN,   match_opcode,   0},
+{"cv.addun",  0, INSN_CLASS_COREV_MAC, "d,s,t,b3", MATCH_ADDUN,  MASK_ADDN,   match_opcode,   0},
 
 /* Terminate the list.  */
 {0, 0, INSN_CLASS_NONE, 0, 0, 0, 0, 0}
