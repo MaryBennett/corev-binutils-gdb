@@ -832,6 +832,10 @@ const struct riscv_opcode riscv_opcodes[] =
 {"cv.minu",   0, INSN_CLASS_COREV_MAC, "d,s,t",    MATCH_MINU,   MASK_SLET,   match_opcode,   0},
 {"cv.max",    0, INSN_CLASS_COREV_MAC, "d,s,t",    MATCH_MAX,    MASK_SLET,   match_opcode,   0},
 {"cv.maxu",   0, INSN_CLASS_COREV_MAC, "d,s,t",    MATCH_MAXU,   MASK_SLET,   match_opcode,   0},
+{"cv.exths",  0, INSN_CLASS_COREV_MAC, "d,s",      MATCH_MIN,    MASK_ABS,    match_opcode,   0},
+{"cv.exthz",  0, INSN_CLASS_COREV_MAC, "d,s",      MATCH_MINU,   MASK_ABS,    match_opcode,   0},
+{"cv.extbs",  0, INSN_CLASS_COREV_MAC, "d,s",      MATCH_MAX,    MASK_ABS,    match_opcode,   0},
+{"cv.extbz",  0, INSN_CLASS_COREV_MAC, "d,s",      MATCH_MAXU,   MASK_ABS,    match_opcode,   0},
 
 /* Terminate the list.  */
 {0, 0, INSN_CLASS_NONE, 0, 0, 0, 0, 0}
