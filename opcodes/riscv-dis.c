@@ -429,6 +429,28 @@ print_insn_args (const char *oparg, insn_t l, bfd_vma pc, disassemble_info *info
 	    print (info->stream, dis_style_immediate, "0");
 	  break;
 
+	/* CORE-V Specific.  */
+	case 'b':
+	  if (oparg[1] == '4')
+	    {
+	      print (info->stream, dis_style_immediate, "%d", ((int) EXTRACT_CV_BI_IMM5 (l)));
+	      ++oparg;
+	      break;
+	    }
+	   else if (oparg[1] == '5')
+	    {
+	      print (info->stream, dis_style_immediate, "%d", ((int) EXTRACT_CV_SIMD_IMM6 (l)));
+	      ++oparg;
+	      break;
+	    }
+	   else if (oparg[1] == '8')
+	    {
+	      print (info->stream, dis_style_immediate, "%d", ((int) EXTRACT_CV_SIMD_UIMM6 (l)));
+	      if (oparg[2] == '1' || oparg[2] == '2' || oparg[2] == '3' || oparg[2] == '4') ++oparg;
+	      ++oparg;
+	      break;
+	    }
+	/* Fall through.  */
 	case 's':
 	  if ((l & MASK_JALR) == MATCH_JALR)
 	    maybe_print_address (pd, rs1, EXTRACT_ITYPE_IMM (l), 0);
