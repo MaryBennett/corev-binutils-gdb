@@ -1373,6 +1373,18 @@ validate_riscv_insn (const struct riscv_opcode *opc, int length)
 	case '>': USE_BITS (OP_MASK_SHAMT, OP_SH_SHAMT); break;
 	case 'A': break; /* Macro operand, must be symbol.  */
 	case 'B': break; /* Macro operand, must be symbol or constant.  */
+	case 'b': /* CORE-V Specific.  */
+	  if (oparg[1] == '6')
+	    {
+	      used_bits |= ENCODE_CV_BITMANIP_UIMM5(-1U);
+	      ++oparg; break;
+	    }
+	  else if (oparg[1] == '7')
+	    {
+	      used_bits |= ENCODE_CV_BITMANIP_UIMM2(-1U);
+	      ++oparg; break;
+	    }
+	  break;
 	case 'c': break; /* Macro operand, must be symbol or constant.  */
 	case 'I': break; /* Macro operand, must be constant.  */
 	case 'D': /* RD, floating point.  */
@@ -3361,7 +3373,34 @@ riscv_ip (char *str, struct riscv_cl_insn *ip, expressionS *imm_expr,
 	      *imm_reloc = BFD_RELOC_32;
 	      asarg = expr_parse_end;
 	      continue;
-
+	      /* CORE-V Specific. */
+	    case 'b':
+	      if (oparg[1] == '6')
+		// b6: Luimm5 bits unsigned immediate bits
+		{
+		  my_getExpression (imm_expr, asarg);
+		  check_absolute_expr (ip, imm_expr, FALSE);
+		  asarg = expr_parse_end;
+		  if (imm_expr->X_add_number<0 || imm_expr->X_add_number>31) break;
+		  ip->insn_opcode |= ENCODE_CV_BITMANIP_UIMM5 (imm_expr->X_add_number);
+		  ++oparg;
+		}
+	      else if (oparg[1] == '7')
+		// b7: Luimm2 bits unsigned immediate bits
+		{
+		  my_getExpression (imm_expr, asarg);
+		  check_absolute_expr (ip, imm_expr, FALSE);
+		  asarg = expr_parse_end;
+		  if (imm_expr->X_add_number<0 || imm_expr->X_add_number>3) break;
+		  ip->insn_opcode |= ENCODE_CV_BITMANIP_UIMM2 (imm_expr->X_add_number);
+		  ++oparg;
+		}
+	      else
+		{
+		  my_getExpression (imm_expr, asarg);
+		  asarg = expr_parse_end;
+		}
+	      continue;
 	    case 'B':
 	      my_getExpression (imm_expr, asarg);
 	      normalize_constant_expr (imm_expr);
